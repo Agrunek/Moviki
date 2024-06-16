@@ -5,6 +5,7 @@ import com.moviki.backend.model.Client;
 import com.moviki.backend.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +24,7 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ClientResponse> getClient() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Client currentClient = (Client) authentication.getPrincipal();
@@ -31,6 +33,7 @@ public class ClientController {
     }
 
     @GetMapping("/")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<ClientResponse>> getClients() {
         List<Client> clients = clientService.getAllClients();
         List<ClientResponse> clientResponse = clients.stream().map(client -> new ClientResponse(client.getName(), client.getEmail(), client.getProfilePicturePath(), client.getCreatedAt())).toList();
