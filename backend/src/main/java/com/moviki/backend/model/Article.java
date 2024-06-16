@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.With;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -22,6 +23,7 @@ import java.util.List;
 
 @Entity
 @Data
+@With
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
@@ -35,8 +37,8 @@ public class Article {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
     @Column(name = "title", nullable = false, unique = true)
     private String title;

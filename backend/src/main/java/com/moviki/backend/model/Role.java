@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.With;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Entity
 @Data
+@With
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
@@ -39,5 +41,5 @@ public class Role {
 
     @ManyToMany(mappedBy = "roles")
     @JsonIgnore
-    private List<User> users = new ArrayList<>();
+    private List<Client> clients = new ArrayList<>();
 }

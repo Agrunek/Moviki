@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.With;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@With
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
@@ -35,8 +37,8 @@ public class Comment {
     private Article article;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
     @Column(name = "content", nullable = false)
     private String content;
