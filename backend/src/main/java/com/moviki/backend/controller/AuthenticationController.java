@@ -29,8 +29,8 @@ public class AuthenticationController {
     @PostMapping("/signup")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest) {
         Client registeredClient = authenticationService.register(registerRequest);
-        RegisterResponse response = new RegisterResponse(registeredClient.getName(), registeredClient.getEmail(), List.copyOf(registeredClient.getRoles()));
-        return ResponseEntity.ok(response);
+        RegisterResponse registerResponse = new RegisterResponse(registeredClient.getName(), registeredClient.getEmail(), List.copyOf(registeredClient.getRoles()));
+        return ResponseEntity.ok(registerResponse);
     }
 
     @PostMapping("/login")

@@ -12,7 +12,6 @@ import java.util.List;
 public class ClientResponse {
 
     private String name;
-    private String email;
     private String profilePicturePath;
     private LocalDateTime createdAt;
     private List<Role> roles;
