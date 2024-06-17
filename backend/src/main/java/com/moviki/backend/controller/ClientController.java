@@ -28,7 +28,7 @@ public class ClientController {
     public ResponseEntity<ClientResponse> getClient() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Client currentClient = (Client) authentication.getPrincipal();
-        ClientResponse clientResponse = new ClientResponse(currentClient.getName(), currentClient.getEmail(), currentClient.getProfilePicturePath(), currentClient.getCreatedAt());
+        ClientResponse clientResponse = new ClientResponse(currentClient.getName(), currentClient.getEmail(), currentClient.getProfilePicturePath(), currentClient.getCreatedAt(), List.copyOf(currentClient.getRoles()));
         return ResponseEntity.ok(clientResponse);
     }
 
@@ -36,7 +36,7 @@ public class ClientController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<ClientResponse>> getClients() {
         List<Client> clients = clientService.getAllClients();
-        List<ClientResponse> clientResponse = clients.stream().map(client -> new ClientResponse(client.getName(), client.getEmail(), client.getProfilePicturePath(), client.getCreatedAt())).toList();
+        List<ClientResponse> clientResponse = clients.stream().map(client -> new ClientResponse(client.getName(), client.getEmail(), client.getProfilePicturePath(), client.getCreatedAt(), List.copyOf(client.getRoles()))).toList();
         return ResponseEntity.ok(clientResponse);
     }
 }

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class AuthenticationController {
     @PostMapping("/signup")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest) {
         Client registeredClient = authenticationService.register(registerRequest);
-        RegisterResponse response = new RegisterResponse(registeredClient.getName(), registeredClient.getEmail());
+        RegisterResponse response = new RegisterResponse(registeredClient.getName(), registeredClient.getEmail(), List.copyOf(registeredClient.getRoles()));
         return ResponseEntity.ok(response);
     }
 
@@ -35,7 +37,7 @@ public class AuthenticationController {
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginRequest loginRequest) {
         Client authenticatedClient = authenticationService.authenticate(loginRequest);
         String jwtToken = jwtService.generateToken(authenticatedClient);
-        LoginResponse loginResponse = new LoginResponse(jwtToken, jwtService.getExpirationTime());
+        LoginResponse loginResponse = new LoginResponse(jwtToken, jwtService.getExpirationTime(), List.copyOf(authenticatedClient.getRoles()));
         return ResponseEntity.ok(loginResponse);
     }
 }
