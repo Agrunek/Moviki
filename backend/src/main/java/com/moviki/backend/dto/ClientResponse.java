@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ClientResponse {
 
+    private Long id;
     private String name;
     private String profilePicturePath;
     private LocalDateTime createdAt;

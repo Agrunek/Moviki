@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CommentResponse {
 
+    private Long id;
     private String content;
     private String articleTitle;
     private String clientName;

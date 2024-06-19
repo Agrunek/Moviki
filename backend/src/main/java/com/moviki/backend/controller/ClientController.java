@@ -32,7 +32,7 @@ public class ClientController {
     public ResponseEntity<ClientResponse> getClient() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Client currentClient = (Client) authentication.getPrincipal();
-        ClientResponse clientResponse = new ClientResponse(currentClient.getName(), currentClient.getProfilePicturePath(), currentClient.getCreatedAt(), List.copyOf(currentClient.getRoles()));
+        ClientResponse clientResponse = new ClientResponse(currentClient.getId(), currentClient.getName(), currentClient.getProfilePicturePath(), currentClient.getCreatedAt(), List.copyOf(currentClient.getRoles()));
         return ResponseEntity.ok(clientResponse);
     }
 
@@ -40,7 +40,7 @@ public class ClientController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<ClientResponse>> getAllClients() {
         List<Client> clients = clientService.getAllClients();
-        List<ClientResponse> clientResponse = clients.stream().map(client -> new ClientResponse(client.getName(), client.getProfilePicturePath(), client.getCreatedAt(), List.copyOf(client.getRoles()))).toList();
+        List<ClientResponse> clientResponse = clients.stream().map(client -> new ClientResponse(client.getId(), client.getName(), client.getProfilePicturePath(), client.getCreatedAt(), List.copyOf(client.getRoles()))).toList();
         return ResponseEntity.ok(clientResponse);
     }
 
@@ -48,7 +48,7 @@ public class ClientController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<ClientResponse> assignRole(@RequestBody RoleRequest roleRequest) {
         Client client = clientService.assignRoleToClient(roleRequest.getName(), roleRequest.getRole());
-        ClientResponse clientResponse = new ClientResponse(client.getName(), client.getProfilePicturePath(), client.getCreatedAt(), List.copyOf(client.getRoles()));
+        ClientResponse clientResponse = new ClientResponse(client.getId(), client.getName(), client.getProfilePicturePath(), client.getCreatedAt(), List.copyOf(client.getRoles()));
         return ResponseEntity.ok(clientResponse);
     }
 
@@ -56,7 +56,7 @@ public class ClientController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<ClientResponse> removeRole(@RequestBody RoleRequest roleRequest) {
         Client client = clientService.removeRoleFromClient(roleRequest.getName(), roleRequest.getRole());
-        ClientResponse clientResponse = new ClientResponse(client.getName(), client.getProfilePicturePath(), client.getCreatedAt(), List.copyOf(client.getRoles()));
+        ClientResponse clientResponse = new ClientResponse(client.getId(), client.getName(), client.getProfilePicturePath(), client.getCreatedAt(), List.copyOf(client.getRoles()));
         return ResponseEntity.ok(clientResponse);
     }
 }

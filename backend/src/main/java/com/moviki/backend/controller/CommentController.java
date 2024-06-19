@@ -31,7 +31,7 @@ public class CommentController {
     @GetMapping("/{title}")
     public ResponseEntity<List<CommentResponse>> getAllArticleComments(@PathVariable String title) {
         List<Comment> comments = commentService.getAllCommentsByArticleTitle(title);
-        List<CommentResponse> commentResponses = comments.stream().map(comment -> new CommentResponse(comment.getContent(), comment.getArticle().getTitle(), comment.getClient().getName(), comment.getCreatedAt())).toList();
+        List<CommentResponse> commentResponses = comments.stream().map(comment -> new CommentResponse(comment.getId(), comment.getContent(), comment.getArticle().getTitle(), comment.getClient().getName(), comment.getCreatedAt())).toList();
         return ResponseEntity.ok(commentResponses);
     }
 
@@ -41,7 +41,7 @@ public class CommentController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Client currentClient = (Client) authentication.getPrincipal();
         Comment comment = commentService.createComment(currentClient, title, request);
-        CommentResponse commentResponse = new CommentResponse(comment.getContent(), comment.getArticle().getTitle(), comment.getClient().getName(), comment.getCreatedAt());
+        CommentResponse commentResponse = new CommentResponse(comment.getId(), comment.getContent(), comment.getArticle().getTitle(), comment.getClient().getName(), comment.getCreatedAt());
         return ResponseEntity.ok(commentResponse);
     }
 }
