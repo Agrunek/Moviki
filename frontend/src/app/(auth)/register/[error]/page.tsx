@@ -1,4 +1,4 @@
-import { login } from "@/api/authentication";
+import { register } from "@/api/authentication";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -6,12 +6,16 @@ import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-export default function LoginPage() {
+export default function RegisterPage({
+  params,
+}: {
+  params: { error: string };
+}) {
   return (
     <Container maxWidth="sm">
       <Box
         component="form"
-        action={login}
+        action={register}
         sx={{
           my: 4,
           display: "flex",
@@ -20,7 +24,16 @@ export default function LoginPage() {
           gap: 4,
         }}
       >
-        <Typography variant="h2">LOG IN</Typography>
+        <Typography variant="h2">REGISTER</Typography>
+        <TextField
+          required
+          fullWidth
+          id="name"
+          label="name"
+          name="name"
+          autoComplete="name"
+          autoFocus
+        />
         <TextField
           required
           fullWidth
@@ -28,7 +41,6 @@ export default function LoginPage() {
           label="Email"
           name="email"
           autoComplete="email"
-          autoFocus
         />
         <TextField
           required
@@ -42,8 +54,11 @@ export default function LoginPage() {
         <Button type="submit" fullWidth variant="contained">
           CONFIRM
         </Button>
-        <Link href="/register" variant="body2">
-          Don't have an account? Join now.
+        <Typography variant="h6" color="red">
+          {decodeURIComponent(params.error)}
+        </Typography>
+        <Link href="/login" variant="body2">
+          Already have the account? Log in.
         </Link>
       </Box>
     </Container>

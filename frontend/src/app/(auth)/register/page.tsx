@@ -17,7 +17,7 @@ export default function RegisterPage() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 6,
+          gap: 4,
         }}
       >
         <Typography variant="h2">REGISTER</Typography>

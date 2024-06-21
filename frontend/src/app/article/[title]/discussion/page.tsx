@@ -96,7 +96,7 @@ export default async function AdminPage({
     <Container maxWidth="md">
       <Box sx={{ my: 4, display: "flex", flexDirection: "column", gap: 4 }}>
         <Typography variant="h2">
-          Discussion for article: {params.title}
+          Discussion for article: {decodeURIComponent(params.title)}
         </Typography>
         <Link href={`/article/${params.title}`} variant="h5">
           Article

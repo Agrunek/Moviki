@@ -6,7 +6,11 @@ import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-export default function LoginPage() {
+export default async function ArticlePage({
+  params,
+}: {
+  params: { error: string };
+}) {
   return (
     <Container maxWidth="sm">
       <Box
@@ -42,6 +46,9 @@ export default function LoginPage() {
         <Button type="submit" fullWidth variant="contained">
           CONFIRM
         </Button>
+        <Typography variant="h6" color="red">
+          {decodeURIComponent(params.error)}
+        </Typography>
         <Link href="/register" variant="body2">
           Don't have an account? Join now.
         </Link>

@@ -35,7 +35,7 @@ export async function register(formData: FormData) {
       throw "Register went wrong...";
     }
   } catch (error) {
-    redirect("/register", RedirectType.replace);
+    redirect(`/register/${error}`, RedirectType.replace);
   }
 
   redirect("/login", RedirectType.replace);
@@ -81,7 +81,7 @@ export async function login(formData: FormData) {
       httpOnly: true,
     });
   } catch (error) {
-    redirect("/login", RedirectType.replace);
+    redirect(`/login/${error}`, RedirectType.replace);
   }
 
   redirect("/", RedirectType.replace);
@@ -109,4 +109,49 @@ export async function updateSession(request: NextRequest) {
   const session = request.cookies.get("session")?.value;
   if (!session) return;
   return NextResponse.next();
+}
+
+export async function fetchUsers(): Promise<User[]> {
+  try {
+    const session = await getSession();
+
+    const response = await fetch("http://localhost:8080/client/", {
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`${response.status}: Users data fetch failed!`);
+    }
+
+    return response.json();
+  } catch (error) {
+    redirect("/", RedirectType.replace);
+  }
+}
+
+export async function flipRank(user: User) {
+  try {
+    const session = await getSession();
+    const isEditor = user.roles.some((role) => role.name === "EDITOR");
+
+    const response = await fetch("http://localhost:8080/client/role", {
+      method: isEditor ? "DELETE" : "POST",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
+      },
+      body: JSON.stringify({ name: user.name, role: "EDITOR" }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`${response.status}: Users data fetch failed!`);
+    }
+  } catch (error) {
+    redirect("/", RedirectType.replace);
+  }
 }
