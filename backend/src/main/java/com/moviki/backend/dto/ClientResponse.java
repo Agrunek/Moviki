@@ -16,4 +16,5 @@ public class ClientResponse {
     private String profilePicturePath;
     private LocalDateTime createdAt;
     private List<Role> roles;
+    private List<String> articles;
 }

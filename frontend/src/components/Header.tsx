@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { logout } from "@/api/authentication";
+import { logout, User } from "@/api/authentication";
 import SearchBar from "@/components/SearchBar";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AppBar from "@mui/material/AppBar";
@@ -13,7 +13,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
-export default function Header(props: { session: string | null }) {
+export default function Header(props: {
+  session: string | null;
+  user: User | null;
+}) {
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
 
   function handleMenu(event: React.MouseEvent<HTMLElement>) {
@@ -33,6 +36,18 @@ export default function Header(props: { session: string | null }) {
           </Typography>
           <Box sx={{ display: "flex", gap: 4, alignItems: "center" }}>
             <SearchBar />
+            {props.user?.roles.some(
+              (role) => role.name === "ADMIN" || role.name === "EDITOR"
+            ) && (
+              <Button color="inherit" href="/create">
+                NEW ARTICLE
+              </Button>
+            )}
+            {props.user?.roles.some((role) => role.name === "ADMIN") && (
+              <Button color="inherit" href="/admin">
+                ADMIN PANEL
+              </Button>
+            )}
             {props.session ? (
               <>
                 <IconButton size="large" onClick={handleMenu} color="inherit">

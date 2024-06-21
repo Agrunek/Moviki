@@ -2,6 +2,7 @@ package com.moviki.backend.controller;
 
 import com.moviki.backend.dto.ClientResponse;
 import com.moviki.backend.dto.RoleRequest;
+import com.moviki.backend.model.Article;
 import com.moviki.backend.model.Client;
 import com.moviki.backend.service.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,8 @@ public class ClientController {
     public ResponseEntity<ClientResponse> getClient() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Client currentClient = (Client) authentication.getPrincipal();
-        ClientResponse clientResponse = new ClientResponse(currentClient.getId(), currentClient.getName(), currentClient.getProfilePicturePath(), currentClient.getCreatedAt(), List.copyOf(currentClient.getRoles()));
+        List<Article> articles = clientService.getAllArticlesByClient(currentClient);
+        ClientResponse clientResponse = new ClientResponse(currentClient.getId(), currentClient.getName(), currentClient.getProfilePicturePath(), currentClient.getCreatedAt(), List.copyOf(currentClient.getRoles()), articles.stream().map(Article::getTitle).toList());
         return ResponseEntity.ok(clientResponse);
     }
 
@@ -40,7 +42,7 @@ public class ClientController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<ClientResponse>> getAllClients() {
         List<Client> clients = clientService.getAllClients();
-        List<ClientResponse> clientResponse = clients.stream().map(client -> new ClientResponse(client.getId(), client.getName(), client.getProfilePicturePath(), client.getCreatedAt(), List.copyOf(client.getRoles()))).toList();
+        List<ClientResponse> clientResponse = clients.stream().map(client -> new ClientResponse(client.getId(), client.getName(), client.getProfilePicturePath(), client.getCreatedAt(), List.copyOf(client.getRoles()), List.of())).toList();
         return ResponseEntity.ok(clientResponse);
     }
 
@@ -48,7 +50,7 @@ public class ClientController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<ClientResponse> assignRole(@RequestBody RoleRequest roleRequest) {
         Client client = clientService.assignRoleToClient(roleRequest.getName(), roleRequest.getRole());
-        ClientResponse clientResponse = new ClientResponse(client.getId(), client.getName(), client.getProfilePicturePath(), client.getCreatedAt(), List.copyOf(client.getRoles()));
+        ClientResponse clientResponse = new ClientResponse(client.getId(), client.getName(), client.getProfilePicturePath(), client.getCreatedAt(), List.copyOf(client.getRoles()), List.of());
         return ResponseEntity.ok(clientResponse);
     }
 
@@ -56,7 +58,7 @@ public class ClientController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<ClientResponse> removeRole(@RequestBody RoleRequest roleRequest) {
         Client client = clientService.removeRoleFromClient(roleRequest.getName(), roleRequest.getRole());
-        ClientResponse clientResponse = new ClientResponse(client.getId(), client.getName(), client.getProfilePicturePath(), client.getCreatedAt(), List.copyOf(client.getRoles()));
+        ClientResponse clientResponse = new ClientResponse(client.getId(), client.getName(), client.getProfilePicturePath(), client.getCreatedAt(), List.copyOf(client.getRoles()), List.of());
         return ResponseEntity.ok(clientResponse);
     }
 }

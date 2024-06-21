@@ -1,7 +1,9 @@
 package com.moviki.backend.service;
 
+import com.moviki.backend.model.Article;
 import com.moviki.backend.model.Client;
 import com.moviki.backend.model.Role;
+import com.moviki.backend.repository.ArticleRepository;
 import com.moviki.backend.repository.ClientRepository;
 import com.moviki.backend.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ public class ClientService {
 
     private final ClientRepository clientRepository;
     private final RoleRepository roleRepository;
+    private final ArticleRepository articleRepository;
 
     @Transactional
     public List<Client> getAllClients() {
@@ -53,5 +56,10 @@ public class ClientService {
         client.getRoles().removeIf(role -> role.getName().equals(roleName));
 
         return clientRepository.save(client);
+    }
+
+    @Transactional
+    public List<Article> getAllArticlesByClient(Client client) {
+        return articleRepository.findAllByClientId(client.getId());
     }
 }
