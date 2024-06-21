@@ -86,7 +86,9 @@ export default async function AccountPage() {
               : ""}
           </Typography>
         </Box>
-        <Typography variant="h4">My articles:</Typography>
+        {user.articles.length !== 0 && (
+          <Typography variant="h4">My articles:</Typography>
+        )}
         <List>{user.articles.map((article) => buildListItem(article))}</List>
       </Box>
     </Container>

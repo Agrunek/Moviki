@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 
 async function tryLoad() {
   const user = await getUser();
@@ -17,6 +16,8 @@ async function tryLoad() {
 }
 
 export default async function ArticleEditPage() {
+  await tryLoad();
+
   async function createArticle(formData: FormData) {
     "use server";
 

@@ -32,10 +32,10 @@ export async function register(formData: FormData) {
     });
 
     if (!response.ok) {
-      return;
+      throw "Register went wrong...";
     }
   } catch (error) {
-    redirect("/");
+    redirect("/register", RedirectType.replace);
   }
 
   redirect("/login", RedirectType.replace);
@@ -53,7 +53,7 @@ export async function login(formData: FormData) {
     });
 
     if (!response.ok) {
-      return;
+      throw "Login went wrong...";
     }
 
     const loginResponse: LoginResponse = await response.json();
@@ -70,7 +70,7 @@ export async function login(formData: FormData) {
     });
 
     if (!user.ok) {
-      return;
+      throw "Login went wrong...";
     }
 
     const userResponse: User = await user.json();
@@ -81,7 +81,7 @@ export async function login(formData: FormData) {
       httpOnly: true,
     });
   } catch (error) {
-    redirect("/");
+    redirect("/login", RedirectType.replace);
   }
 
   redirect("/", RedirectType.replace);

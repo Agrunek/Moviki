@@ -5,6 +5,7 @@ import Markdown from "react-markdown";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import EditIcon from "@mui/icons-material/Edit";
+import Link from "@mui/material/Link";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 
@@ -88,6 +89,9 @@ export default async function ArticlePage({
             <Typography variant="h5">by {article.client}</Typography>
           )}
         </Box>
+        <Link href={`/article/${params.title}/discussion`} variant="h5">
+          Discussion
+        </Link>
         <Markdown>{article.content}</Markdown>
       </Box>
     </Container>
